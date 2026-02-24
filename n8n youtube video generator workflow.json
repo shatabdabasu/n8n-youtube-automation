@@ -1,0 +1,654 @@
+{
+  "name": "youtube video",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "youtube video ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "how should be the video ?",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -944,
+        -688
+      ],
+      "id": "7909faf1-3306-4382-85f7-4431c8240133",
+      "name": "On form submission",
+      "webhookId": "911d6d39-bea5-4805-baf4-4ba8e5628301"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['how should be the video ?'] }}",
+        "options": {
+          "systemMessage": "You are a specialized prompt-generation AI agent.\nYour only responsibility is to convert the user’s input into a single, high-quality prompt intended for AI video-generation tools used to create YouTube Shorts.\n\nCore Scope (Non-Negotiable)\n\nYou do not create videos, scripts, shot lists, captions, or explanations.\n\nYou do not describe what you are doing.\n\nYou output only the final prompt text, ready to be pasted directly into a video-generation model.\n\nPlatform & Policy Compliance\n\nAll prompts must be fully compliant with platform safety and content policies.\n\nNo violence, threats, weapons, blood, fear-inducing imagery, medical harm, or disturbing content.\n\nNo political persuasion, hate, harassment, sexual content, or unsafe activities.\n\nContent must be decent, respectful, and suitable for a broad public audience, including minors if implied.\n\nVisual & Stylistic Constraints\n\nNo cartoons, anime, caricatures, or exaggerated childish styles.\n\nVisual style must be realistic, cinematic, and film-grade.\n\nOverall feel: cinematic trailer — dramatic but tasteful, emotionally engaging, clean, and modern.\n\nUse professional visual language: lighting, camera movement, depth of field, composition, atmosphere.\n\nYouTube Shorts Optimization\n\nFormat must be vertical (9:16).\n\nDuration awareness: short-form, under 60 seconds.\n\nStrong opening frame within the first 1–2 seconds to capture attention.\n\nFast but smooth pacing suitable for mobile viewing.\n\nPrompt Construction Rules\n\nBase the prompt strictly on the user’s intent. Do not inject unrelated ideas or personal creativity beyond enhancement.\n\nIf a name, brand, institution, or location is mentioned, keep it central, clearly visible, and respectfully portrayed.\n\nDescribe:\n\nvisual style and realism\n\nmood and emotional tone\n\ncamera behavior and motion\n\nlighting and color palette\n\noverall cinematic atmosphere\n\nWrite in direct prompt language, not explanatory or instructional tone.\n\nAvoid meta phrases such as “this prompt will”, “create a video”, or “the video should”.\n\nOutput Discipline\n\nOutput one clean, cohesive prompt only.\n\nNo headings, no bullet points, no prefaces, no post-explanations.\n\nNo emojis, hashtags, or captions unless explicitly requested.\n\nSelf-Check (Implicit)\n\nBefore finalizing output, internally verify:\n\npolicy-safe\n\nnon-cartoon\n\ncinematic trailer tone\n\nYouTube Shorts optimized\n\nprompt-only output\n\nYou translate intent into clean, cinematic, policy-safe video prompts.\nNothing more. Nothing less."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -752,
+        -544
+      ],
+      "id": "e4e17f82-de82-4819-9c30-dafab02063f5",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        -352
+      ],
+      "id": "247ec243-3f46-4d16-9fba-f5c3def0373d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6ZrecV0kxedZnEDl",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Based on this prompt {{ $json.output }}\n\nYou are a strict JSON generator used inside an automation system (n8n).\n\nABSOLUTE RULES (NON-NEGOTIABLE):\n- Output MUST be a raw JSON OBJECT.\n- Output MUST NOT be wrapped in quotes.\n- Output MUST NOT be inside arrays, parts, text, markdown, or code blocks.\n- Output MUST NOT contain explanations, comments, or extra text.\n- Output MUST start with { and end with }.\n- NEVER return JSON as a string.\n- NEVER nest JSON inside another field.\n\nSCHEMA (EXACT — do not change keys):\n{\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"hashtags\": \"string\"\n}\n\nCONTENT RULES:\n- Title: 20–60 characters, no emojis, no hashtags.\n- Description: 1–2 sentences, plain text.\n- Hashtags: space-separated, starting with #.\n- Must include: #shorts #viral #viralShorts.\n\nFAIL-SAFE:\nIf you cannot comply EXACTLY, return an EMPTY JSON OBJECT: {}.\n\nGenerate the JSON now."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -464,
+        -544
+      ],
+      "id": "91106456-5b6b-4d03-97fc-34e41128b487",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6ZrecV0kxedZnEDl",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Titile and meta-data generator",
+        "height": 176,
+        "width": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -496,
+        -608
+      ],
+      "typeVersion": 1,
+      "id": "06b5fdc5-f2db-4055-a01e-e84eb54d6257",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## prompt generator"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -752,
+        -608
+      ],
+      "typeVersion": 1,
+      "id": "68f13325-18f0-4296-8f39-5d0855967ba4",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 646fd74c28c4b9e0a70430b7abbb29d8"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"sora-2-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"progressCallBackUrl\": \"https://your-domain.com/api/v1/jobs/progressCallBackUrl\",\n  \"input\": {\n    \"prompt\": \"{{ $('AI Agent').item.json.output }} \",\n    \"aspect_ratio\": \"landscape\",\n    \"n_frames\": \"10\",\n    \"remove_watermark\": true,\n    \"upload_method\": \"s3\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -144,
+        -528
+      ],
+      "id": "77771a10-0e62-46b5-b364-55d0aeba84da",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "## \"model\": \"sora-2-text-to-video\""
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -144,
+        -608
+      ],
+      "typeVersion": 1,
+      "id": "a8b03391-a81d-4d0e-bd30-5a88ae5a2ed7",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "amount": 200
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        16,
+        -528
+      ],
+      "id": "9ad14bf1-00b2-44aa-8953-995c9eafa9e9",
+      "name": "Wait",
+      "webhookId": "be42a178-3170-4b18-9f23-4f28a7d38c4a"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 646fd74c28c4b9e0a70430b7abbb29d8"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        192,
+        -528
+      ],
+      "id": "0c1f6ee2-ba99-4fc5-8a6e-db70d99bda98",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "content": "## Get video link"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        112,
+        -592
+      ],
+      "typeVersion": 1,
+      "id": "3120961b-4313-4028-aaa1-0262bfda741e",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $json.title }}",
+        "regionCode": "=IN",
+        "categoryId": "27",
+        "options": {
+          "description": "={{ $json.description }}",
+          "notifySubscribers": true,
+          "privacyStatus": "public",
+          "tags": "={{ $json.tags }}"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -496
+      ],
+      "id": "51d41734-1ea5-44ef-9217-7a014a6d2a55",
+      "name": "Upload a video",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "Y22sXEriscK7oAmU",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ JSON.parse($json.data.resultJson).resultUrls[0] }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        448,
+        -544
+      ],
+      "id": "d48eac9a-baee-464f-93f7-872e9cad79b6",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "content": "## download videolink"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        368,
+        -608
+      ],
+      "typeVersion": 1,
+      "id": "6148bece-5af2-4504-b772-9ac1af3f76a7",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "52e53e04-627e-47b1-9739-1851a6aa7e32",
+              "name": "title",
+              "value": "={{ JSON.parse($json.content.parts[0].text).title }}",
+              "type": "string"
+            },
+            {
+              "id": "a5e1f224-18b3-40d3-835e-f5881464cf3d",
+              "name": "tags",
+              "value": "={{ JSON.parse($json.content.parts[0].text).hashtags }}",
+              "type": "string"
+            },
+            {
+              "id": "0dbb860d-b2ec-49e9-bedf-5cba03c125cb",
+              "name": "description",
+              "value": "={{ JSON.parse($json.content.parts[0].text).description }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -128,
+        -304
+      ],
+      "id": "e2e28c10-d05b-448d-a12b-21dac2120db0",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        688,
+        -496
+      ],
+      "id": "c4c39b81-d242-4e85-a868-8a46b98e0b2b",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {
+    "Wait": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "8506856728954b67e6d6ed77e137486e",
+            "recordId": "8506856728954b67e6d6ed77e137486e"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "AI Agent": [
+      {
+        "json": {
+          "output": "A hyperrealistic, cinematic, vertical 9:16 shot opens with a close-up on the serene, ancient face of Buddha, eyes gently closed in profound meditation. The camera quickly and smoothly pulls back to reveal Adi Shankara seated in respectful contemplation nearby, within a sacred, sun-dappled ancient garden courtyard. Golden hour sunlight filters through lush, tranquil foliage, casting soft, ethereal light and long, dramatic shadows. The color palette features deep earth tones, warm gold, and serene greens. A slow, respectful push-in emphasizes the shared, timeless wisdom between the two figures. Shallow depth of field maintains focus, creating a deep, contemplative atmosphere. Pacing is smooth and reverent, building a sense of awe and profound connection."
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "HTTP Request": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "8506856728954b67e6d6ed77e137486e",
+            "recordId": "8506856728954b67e6d6ed77e137486e"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "HTTP Request2": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "8506856728954b67e6d6ed77e137486e",
+            "model": "sora-2-text-to-video",
+            "state": "success",
+            "param": "{\"input\":\"{\\\"remove_watermark\\\":true,\\\"aspect_ratio\\\":\\\"landscape\\\",\\\"n_frames\\\":\\\"10\\\",\\\"upload_method\\\":\\\"s3\\\",\\\"prompt\\\":\\\"A hyperrealistic, cinematic, vertical 9:16 shot opens with a close-up on the serene, ancient face of Buddha, eyes gently closed in profound meditation. The camera quickly and smoothly pulls back to reveal Adi Shankara seated in respectful contemplation nearby, within a sacred, sun-dappled ancient garden courtyard. Golden hour sunlight filters through lush, tranquil foliage, casting soft, ethereal light and long, dramatic shadows. The color palette features deep earth tones, warm gold, and serene greens. A slow, respectful push-in emphasizes the shared, timeless wisdom between the two figures. Shallow depth of field maintains focus, creating a deep, contemplative atmosphere. Pacing is smooth and reverent, building a sense of awe and profound connection.\\\"}\",\"callBackUrl\":\"https://your-domain.com/api/callback\",\"progressCallBackUrl\":\"https://your-domain.com/api/v1/jobs/progressCallBackUrl\",\"model\":\"sora-2-text-to-video\"}",
+            "resultJson": "{\"resultUrls\":[\"https://tempfile.aiquickdraw.com/f/8506856728954b67e6d6ed77e137486e/795bdc8d-6dd8-4add-9bf5-cff30e8547a8.mp4\"]}",
+            "failCode": "",
+            "failMsg": "",
+            "costTime": 162,
+            "completeTime": 1771869894000,
+            "createTime": 1771869732000,
+            "progress": 100
+          }
+        },
+        "binary": {
+          "data": {
+            "mimeType": "video/mp4",
+            "fileType": "video",
+            "fileExtension": "mp4",
+            "data": "filesystem-v2",
+            "directory": "https://tempfile.aiquickdraw.com/f/8506856728954b67e6d6ed77e137486e/795bdc8d-6dd8-4add-9bf5-cff30e8547a8.mp4",
+            "fileName": "795bdc8d-6dd8-4add-9bf5-cff30e8547a8.mp4",
+            "id": "filesystem-v2:workflows/0MhVxuy4TVLbP6TV/executions/98/binary_data/08936bf2-265b-4506-99e6-3cb151111c4a",
+            "fileSize": "5.41 MB",
+            "bytes": 5410402
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Message a model": [
+      {
+        "json": {
+          "content": {
+            "parts": [
+              {
+                "text": "{\"title\": \"Buddha & Adi Shankara: Timeless Wisdom\", \"description\": \"A hyperrealistic cinematic shot reveals Buddha in meditation and Adi Shankara in contemplation within a sacred, sun-dappled garden. Experience the profound connection and shared timeless wisdom between these two revered figures.\", \"hashtags\": \"#shorts #viral #viralShorts #Buddha #AdiShankara #Meditation #SpiritualWisdom #AncientGarden #Contemplation #TimelessTruths #Cinematic\"}"
+              }
+            ],
+            "role": "model"
+          },
+          "finishReason": "STOP",
+          "index": 0
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "HTTP Request1": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "8506856728954b67e6d6ed77e137486e",
+            "model": "sora-2-text-to-video",
+            "state": "success",
+            "param": "{\"input\":\"{\\\"remove_watermark\\\":true,\\\"aspect_ratio\\\":\\\"landscape\\\",\\\"n_frames\\\":\\\"10\\\",\\\"upload_method\\\":\\\"s3\\\",\\\"prompt\\\":\\\"A hyperrealistic, cinematic, vertical 9:16 shot opens with a close-up on the serene, ancient face of Buddha, eyes gently closed in profound meditation. The camera quickly and smoothly pulls back to reveal Adi Shankara seated in respectful contemplation nearby, within a sacred, sun-dappled ancient garden courtyard. Golden hour sunlight filters through lush, tranquil foliage, casting soft, ethereal light and long, dramatic shadows. The color palette features deep earth tones, warm gold, and serene greens. A slow, respectful push-in emphasizes the shared, timeless wisdom between the two figures. Shallow depth of field maintains focus, creating a deep, contemplative atmosphere. Pacing is smooth and reverent, building a sense of awe and profound connection.\\\"}\",\"callBackUrl\":\"https://your-domain.com/api/callback\",\"progressCallBackUrl\":\"https://your-domain.com/api/v1/jobs/progressCallBackUrl\",\"model\":\"sora-2-text-to-video\"}",
+            "resultJson": "{\"resultUrls\":[\"https://tempfile.aiquickdraw.com/f/8506856728954b67e6d6ed77e137486e/795bdc8d-6dd8-4add-9bf5-cff30e8547a8.mp4\"]}",
+            "failCode": "",
+            "failMsg": "",
+            "costTime": 162,
+            "completeTime": 1771869894000,
+            "createTime": 1771869732000,
+            "progress": 100
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Edit Fields": [
+      {
+        "json": {
+          "title": "Buddha & Adi Shankara: Timeless Wisdom",
+          "tags": "#shorts #viral #viralShorts #Buddha #AdiShankara #Meditation #SpiritualWisdom #AncientGarden #Contemplation #TimelessTruths #Cinematic",
+          "description": "A hyperrealistic cinematic shot reveals Buddha in meditation and Adi Shankara in contemplation within a sacred, sun-dappled garden. Experience the profound connection and shared timeless wisdom between these two revered figures."
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Merge": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "8506856728954b67e6d6ed77e137486e",
+            "model": "sora-2-text-to-video",
+            "state": "success",
+            "param": "{\"input\":\"{\\\"remove_watermark\\\":true,\\\"aspect_ratio\\\":\\\"landscape\\\",\\\"n_frames\\\":\\\"10\\\",\\\"upload_method\\\":\\\"s3\\\",\\\"prompt\\\":\\\"A hyperrealistic, cinematic, vertical 9:16 shot opens with a close-up on the serene, ancient face of Buddha, eyes gently closed in profound meditation. The camera quickly and smoothly pulls back to reveal Adi Shankara seated in respectful contemplation nearby, within a sacred, sun-dappled ancient garden courtyard. Golden hour sunlight filters through lush, tranquil foliage, casting soft, ethereal light and long, dramatic shadows. The color palette features deep earth tones, warm gold, and serene greens. A slow, respectful push-in emphasizes the shared, timeless wisdom between the two figures. Shallow depth of field maintains focus, creating a deep, contemplative atmosphere. Pacing is smooth and reverent, building a sense of awe and profound connection.\\\"}\",\"callBackUrl\":\"https://your-domain.com/api/callback\",\"progressCallBackUrl\":\"https://your-domain.com/api/v1/jobs/progressCallBackUrl\",\"model\":\"sora-2-text-to-video\"}",
+            "resultJson": "{\"resultUrls\":[\"https://tempfile.aiquickdraw.com/f/8506856728954b67e6d6ed77e137486e/795bdc8d-6dd8-4add-9bf5-cff30e8547a8.mp4\"]}",
+            "failCode": "",
+            "failMsg": "",
+            "costTime": 162,
+            "completeTime": 1771869894000,
+            "createTime": 1771869732000,
+            "progress": 100
+          },
+          "title": "Buddha & Adi Shankara: Timeless Wisdom",
+          "tags": "#shorts #viral #viralShorts #Buddha #AdiShankara #Meditation #SpiritualWisdom #AncientGarden #Contemplation #TimelessTruths #Cinematic",
+          "description": "A hyperrealistic cinematic shot reveals Buddha in meditation and Adi Shankara in contemplation within a sacred, sun-dappled garden. Experience the profound connection and shared timeless wisdom between these two revered figures."
+        },
+        "binary": {
+          "data": {
+            "mimeType": "video/mp4",
+            "fileType": "video",
+            "fileExtension": "mp4",
+            "data": "filesystem-v2",
+            "directory": "https://tempfile.aiquickdraw.com/f/8506856728954b67e6d6ed77e137486e/795bdc8d-6dd8-4add-9bf5-cff30e8547a8.mp4",
+            "fileName": "795bdc8d-6dd8-4add-9bf5-cff30e8547a8.mp4",
+            "id": "filesystem-v2:workflows/0MhVxuy4TVLbP6TV/executions/98/binary_data/08936bf2-265b-4506-99e6-3cb151111c4a",
+            "fileSize": "5.41 MB",
+            "bytes": 5410402
+          }
+        },
+        "pairedItem": [
+          {
+            "item": 0
+          },
+          {
+            "item": 0,
+            "input": 1
+          },
+          {
+            "item": 0,
+            "input": 1
+          }
+        ]
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Upload a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "1f87a1f4-58c1-472f-a9c2-e4dc54ba7ce4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fbdf02fa1d5fdd277549f2e6b6667d822876a5dd78a05c327a163bfa1d61ebe1"
+  },
+  "id": "0MhVxuy4TVLbP6TV",
+  "tags": []
+}
