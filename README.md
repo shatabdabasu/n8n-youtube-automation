@@ -1,3 +1,17 @@
+
+This assignment was implemented **entirely using free-tier resources**.
+
+- The video is generated from a **basic, raw prompt** (no advanced fine-tuning or premium models).
+- The end-to-end workflow is **fully automated**.
+- Once the form input is submitted, the video is:
+  - generated,
+  - processed,
+  - and **uploaded automatically to YouTube**
+- **No manual intervention** is involved at any stage after submission.
+
+The focus of this assignment is on **automation design, workflow orchestration, and correct integration of AI services**, not on video quality or premium tooling.
+
+
 # 🎬 Automated YouTube Shorts Generation Pipeline (n8n)
 
 This project demonstrates an **end-to-end AI-powered automation workflow** built using **n8n**, designed to generate, process, and publish YouTube Shorts with minimal manual intervention.
